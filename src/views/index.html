@@ -1,0 +1,26 @@
+<header>
+    <!-- Import Styles Modules -->
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Import Calendar Module -->
+    <script src='../js/calendar.js'></script>
+</header>
+<body>
+    <!-- Calendar Container -->
+    <div class="container col-md-12 mt-5">
+        <div class="col-md-12 d-flex justify-content-between" id="month-title">
+            <button id="prev" class="btn">
+                <img src="../images/chevron-circle-left-solid.svg" class="arrow-icon">
+            </button>
+            <h1 id="month-name"> Enero </h1>
+            <button id="next" class="btn">
+                <img src="../images/chevron-circle-right-solid.svg" class="arrow-icon">
+            </button>
+        </div>
+        <!-- Days container -->
+        <div id="row" class="row m-auto"></div>
+    </div>
+</body>
+<script>
+    /* Execute script for create calendar */
+    startCalendar(document, "row", "prev", "next", "month-name");
+</script>

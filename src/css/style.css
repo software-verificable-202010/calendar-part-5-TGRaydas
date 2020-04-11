@@ -1,0 +1,15 @@
+/* Import bootstrap module */
+@import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+.arrow-icon{
+    width: 20px;
+    height: 20px;
+}
+
+.bg-not-month{
+    opacity: 0.6;
+}
+
+.bg-end-week{
+    background-color: lightsteelblue;
+}
