@@ -13,3 +13,34 @@
 .bg-end-week{
     background-color: lightsteelblue;
 }
+
+.week-calendar-box-height{
+	height: 60px;
+}
+
+.full-width{
+	width: 98%;
+	padding-left: 40px;
+}
+
+.week-hour-box{
+	border: 1px solid;
+	border-color: grey;
+	width: 14.2%;
+	padding: 10px;
+	height: 60px;
+
+}
+
+.week-calendar-day-name{
+	border: 1px solid;
+	border-color: grey;
+	width: 14.2%;
+	padding: 10px;
+	height: 60px;
+	font-size: 14px
+}
+
+.week-box-width{
+	width: 14.2%
+}
