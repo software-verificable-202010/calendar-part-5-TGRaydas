@@ -14,7 +14,7 @@ var getEvents = () => {
     events = ipc.sendSync('get-events')
 }
 
-
+/* Display navigation arrows accords to month calendar */
 var showArrows = (document) => {
     document.getElementById(viewConst.nextMonthID).style.display = 'block'
     document.getElementById(viewConst.prevMonthID).style.display = 'block'
@@ -74,14 +74,14 @@ var renderMonthCalendarCard = (document, dayName, dayNumber, month, year, dayDat
     let backgroundColorClass = viewConst.backgroundWhiteClass;
     let headerColorClass = viewConst.monthBoxHeaderClass;
     /* If is a endweek day */
-    if (dayName === 'Sat' || dayName === 'Sun') {
+    if (dayName === calendarConst.satDayName || dayName === calendarConst.sunDayName) {
         headerColorClass = viewConst.monthBoxEndWeekDayHeaderClass;
-    } else if ((dayName === '.') & (dayNumber === 5)) {
+    } else if ((dayName === calendarConst.emptyDayName) & (dayNumber === 5)) {
         /* If is a day out of this month but is end of weekday */
         headerColorClass = viewConst.monthBoxEndWeekDayHeaderClass;
         backgroundColorClass = viewConst.dayNotInMonthClass;
         dayNumber = '';
-    } else if (dayName === '.') {
+    } else if (dayName === calendarConst.emptyDayName) {
         /* If is a day out of this month */
         backgroundColorClass = viewConst.dayNotInMonthClass;
         dayNumber = '';
@@ -98,7 +98,7 @@ var renderMonthCalendarCard = (document, dayName, dayNumber, month, year, dayDat
 };
 
 /* Generate the correct logic for a calendar month */
-var monthCalendar = (month, year, document) => {
+var generateMonthCalendar = (month, year, document) => {
     /* Get all dates in the speficic month */
     let dates = getDaysInMonth(month, year);
     /* Get the start month day number week off set */
@@ -138,7 +138,7 @@ var changeToNextMonth = (document) => {
     /* Change calendar title */
     setMonthTitle(monthNames[calendarMonth] + ' ' + calendarYear, document);
     /* Refresh calendar */
-    monthCalendar(calendarMonth, calendarYear, document);
+    generateMonthCalendar(calendarMonth, calendarYear, document);
 };
 /* Preview month button pressed trigger function */
 var changeToPrevMonth = (document, innerID, monthTitleID) => {
@@ -154,7 +154,7 @@ var changeToPrevMonth = (document, innerID, monthTitleID) => {
     setMonthTitle(monthNames[calendarMonth] + ' ' + calendarYear, document, monthTitleID);
     /* Refresh calendar */
 
-    monthCalendar(calendarMonth, calendarYear, document);
+    generateMonthCalendar(calendarMonth, calendarYear, document);
 };
 
 /* Generate calendar logic */
@@ -171,7 +171,7 @@ var startMonthCalendar = (document) => {
     document.getElementById(viewConst.containerID).innerHTML = '';
     setMonthTitle(monthNames[today.getMonth()] + ' ' + calendarYear, document);
     /* Generate calendar */
-    monthCalendar(calendarMonth, calendarYear, document, containerID);
+    generateMonthCalendar(calendarMonth, calendarYear, document, containerID);
 };
 
 module.exports = {

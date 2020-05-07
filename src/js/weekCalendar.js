@@ -9,6 +9,8 @@ let weekDayOffSet = null;
 let events = [];
 let monthNavigationValue = 1;
 
+
+/* Display navigation arrows accords to week calendar */
 var showArrows = () => {
     document.getElementById(viewConst.nextMonthID).style.display = 'none'
     document.getElementById(viewConst.prevMonthID).style.display = 'none'
@@ -23,6 +25,7 @@ var getEvents = () => {
 
 var searchEventsInHourBox = (startHour, endHour, actualDate) => {
     let hourEvents = [];
+
     events.map(event => {
         if (event.date != actualDate) {
             return;
@@ -43,8 +46,10 @@ var setMonthTitle = (title, document) => {
 };
 
 var getDaysInWeek = (month, year) => {
-    var first = firstDayWeek + 1; // First day is the day of the month - the day of the week
-    var last = first + 6; // last day is the first day + 6
+    /*First day of the week + 1 for get first as monday*/
+    var first = firstDayWeek + 1; 
+    /* last day is the first day + 6 */
+    var last = first + 6; 
     var dates = [];
     var dayOfNextMonth = 1;
     var dayOfPrevMonthIndex = -1;
@@ -55,26 +60,30 @@ var getDaysInWeek = (month, year) => {
             var daysInPrevMonth = getDaysInMonth(month - 1, year);
             date = new Date(year, month - 1, daysInPrevMonth[daysInPrevMonth.length + day]).toUTCString()
         }
+        /* day loop is greater than last day in month */
         else if(day > daysInMonth[daysInMonth.length - 1].getDate()){
             date = new Date(year, month + 1, dayOfNextMonth).toUTCString();
             dayOfNextMonth += 1;
         }
+        /* day loop is less than first day in month */
         else if(day < daysInMonth[0].getDate()){
             date = new Date(year, month - 1, daysInMonth[daysInMonth.length - dayOfPrevMonthIndex]).toUTCString();
             dayOfPrevMonthIndex -= 1;
         }
         dates.push(date.toString().replace(',', '').split(' '));
     }
-    console.log(dates)
     return dates
 }
 const weekDates = require('../js/calendarConst').weekDates;
 
+/* Display all week calendar hours */
 var renderWeekCalendarCard = (document, events, id, bgClass) => {
     let card = `<div date='${id}' class="${viewConst.hourBoxClass} ${bgClass}">${events}</div>`
     document.getElementById(viewConst.containerID).innerHTML += card;
 }
 
+
+/* Display week calendar left side hours */
 var renderWeekCalendarHours = (document) => {
     document.getElementById(viewConst.weekHoursContainer).innerHTML = '';
     for (let hour = 0; hour < 24; ++hour) {
@@ -85,6 +94,7 @@ var renderWeekCalendarHours = (document) => {
     }
 }
 
+/* Return the event view in week calendar */
 var getEventCard = (event) => {
     let card = `<span class="${event.badgeClass}">${event.title}
                     <br/>${event.description}
@@ -94,7 +104,7 @@ var getEventCard = (event) => {
 }
 
 
-var weekCalendar = (month, year, document) => {
+var generateWeekCalendar = (month, year, document) => {
     getEvents();
     document.getElementById(viewConst.containerID).innerHTML = '';
     setMonthTitle(calendarConst.monthNames[calendarMonth] + ' ' + calendarYear, document);
@@ -108,14 +118,24 @@ var weekCalendar = (month, year, document) => {
     ]
     let hour = 0;
     let weekDay = parseInt(weekDates[0][1]);
+    let monthDays = getDaysInMonth(month, year);
     for (let box = 0; box < 7 * 24; box++) {
-        boxID = `${weekDay}-${month}-${year}`;
+        let lastMonthDay = parseInt(monthDays[monthDays.length - 1].toString().split(' ')[2])
+        let boxID = `${weekDay}-${month}-${year}`;
+        let bgClass = '';
+        /*If weekDay is greater than last day of actual month, start as first day of next month*/
+        if (weekDay > lastMonthDay){
+            weekDay = weekDay - lastMonthDay
+        }
+        /* If day belong to next month  */
+        if(weekDay < parseInt(weekDates[0][1])){
+            boxID = `${weekDay}-${month + 1}-${year}`;
+        }
         let hoursEvents = searchEventsInHourBox(hour, hour + 1, boxID)
         let hourBoxEvents = '';
         hoursEvents.map(event => {
             hourBoxEvents += getEventCard(event)
         })
-        let bgClass = '';
         if (endWeekDays.includes(weekDay)) {
             bgClass += viewConst.dayNotInMonthClass
         }
@@ -146,6 +166,7 @@ var changeToNextWeek = (document) => {
     firstDayWeek += 7
     const daysMonth = getDaysInMonth(calendarMonth, calendarYear);
     let lastMonthDay = daysMonth[daysMonth.length - 1].getDate();
+
     if (firstDayWeek >= lastMonthDay) {
         calendarMonth += 1
         if(calendarMonth > 11){
@@ -154,7 +175,7 @@ var changeToNextWeek = (document) => {
         }
         firstDayWeek =  firstDayWeek - lastMonthDay
     }
-    weekCalendar(calendarMonth, calendarYear, document);
+    generateWeekCalendar(calendarMonth, calendarYear, document);
 }
 var changeToPrevWeek = (document) => {
     monthNavigationValue = 0
@@ -171,7 +192,7 @@ var changeToPrevWeek = (document) => {
         let datesNewMonth = getDaysInMonth(calendarMonth, calendarYear)
         firstDayWeek = datesNewMonth[datesNewMonth.length - 1].getDate() + firstDayWeek ;
     }
-    weekCalendar(calendarMonth, calendarYear, document);
+    generateWeekCalendar(calendarMonth, calendarYear, document);
 }
 
 var startWeekCalendar = (document) => {
@@ -185,7 +206,7 @@ var startWeekCalendar = (document) => {
     /* Define clendarYear to actual year */
     calendarYear = today.getFullYear();
     /* Generate calendar */
-    weekCalendar(calendarMonth, calendarYear, document);
+    generateWeekCalendar(calendarMonth, calendarYear, document);
 };
 
 module.exports = {
