@@ -23,7 +23,12 @@
 	padding-left: 40px;
 }
 
+.card-body{
+	overflow: scroll;
+}
+
 .week-hour-box{
+	overflow: scroll;
 	border: 1px solid;
 	border-color: grey;
 	width: 14.2%;

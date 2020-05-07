@@ -3,7 +3,7 @@
 /* Import Requirments */
 var MongoClient = require('mongodb').MongoClient;
 var dbUrl = "mongodb://localhost:27017/calendar";
-
+const viewConst = require('./js/viewConst.js');
 let collection = null;
 
 MongoClient.connect(dbUrl, function(err, db) {
@@ -14,7 +14,8 @@ MongoClient.connect(dbUrl, function(err, db) {
 
 const {
     app,
-    BrowserWindow
+    BrowserWindow,
+    dialog
 } = require('electron');
 const path = require('path');
 const url = require('url');
@@ -40,6 +41,20 @@ app.on('ready', () => {
 });
 
 ipc.on('save-event', (event, args) => {
+    let standardDate = "01/01/1970";
+    console.log(viewConst.errorMessage, viewConst.titleErrorMessage)
+    if(args.title === '') {
+        dialog.showErrorBox(viewConst.errorMessage, viewConst.titleErrorMessage);
+        return;
+    }
+    else if(Date.parse(`${standardDate} ${args.startTime}`) >= Date.parse(`${standardDate} ${args.endTime}`)){
+        dialog.showErrorBox(viewConst.errorMessage, viewConst.timesErrorMessage)
+        return;
+    }
+    else if(args.startTime == '' || args.endTime == ''){
+        dialog.showErrorBox(viewConst.errorMessage, viewConst.timesErrorMessage)
+        return;
+    }
     collection.insertOne(args, (err, res) => {
         if (err) throw err;
     })

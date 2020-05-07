@@ -19,6 +19,31 @@ const monthBoxHeaderClass = "bg-primary";
 const monthBoxEndWeekDayHeaderClass = "bg-success"
 const dayNotInMonthClass = "bg-light bg-not-month";
 const dayBoxClass = "day-box-card";
+const primaryBadgeClass = "badge badge-primary"
+const secondaryBadgeClass = "badge badge-secondary"
+const successBadgeClass="badge badge-success"
+const dangerBadgeClass = "badge badge-danger"
+const warningBadgeClass = "badge badge-warning"
+const infoBadgeClass = "badge badge-info";
+const lightBadgeClass = "badge badge-light";
+const darkBadgeClass = "badge badge-dark";
+const monthCalendarButtonID = "monthly";
+const weekCalendarButtonID = "weekly";
+const errorMessage = "Oops! Something went wrong!";
+const timesErrorMessage = "Start time should be greater than end time!";
+const titleErrorMessage = "The event must have a title.";
+
+
+const badgeClasses = [
+    primaryBadgeClass,
+    secondaryBadgeClass,
+    successBadgeClass,
+    dangerBadgeClass,
+    warningBadgeClass,
+    infoBadgeClass,
+    lightBadgeClass,
+    darkBadgeClass,
+]
 
 
 module.exports = {
@@ -41,5 +66,11 @@ module.exports = {
     dayBoxClass: dayBoxClass,
     monthBoxEndWeekDayHeaderClass: monthBoxEndWeekDayHeaderClass,
     monthBoxHeaderClass: monthBoxHeaderClass,
-    dayNotInMonthClass: dayNotInMonthClass
+    dayNotInMonthClass: dayNotInMonthClass,
+    badgeClasses: badgeClasses,
+    monthCalendarButtonID: monthCalendarButtonID,
+    weekCalendarButtonID: weekCalendarButtonID,
+    errorMessage: errorMessage,
+    timesErrorMessage: timesErrorMessage,
+    titleErrorMessage: titleErrorMessage
 }

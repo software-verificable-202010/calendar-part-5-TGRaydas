@@ -1,14 +1,10 @@
 const monthNames = require('../js/calendarConst').monthNames;
 const weekDates = require('../js/calendarConst').weekDates;
-
 const viewConst = require('../js/viewConst');
 const calendarConst = require('../js/calendarConst')
 
 
 const openModalAddEvents = require('../js/addEvent').openModalAddEvents;
-
-
-let calendarType = 0; // 0 = Month calendar, 1 = Week calendar
 
 const ipc = require('electron').ipcRenderer
 
@@ -33,7 +29,7 @@ let containerID = '';
 let monthTitleID = '';
 
 var getEventCard = (event) => {
-    let card = `<span class="badge badge-primary">${event.title}</span>`
+    let card = `<span class="${event.badgeClass}">${event.title}</span>`
     return card;
 }
 
@@ -111,7 +107,7 @@ var monthCalendar = (month, year, document) => {
     document.getElementById(viewConst.containerID).innerHTML = '';
     /* Render off set days */
     for (var i = 0; i < offSetDay; i++) {
-        renderMonthCalendarCard(document, '.', i);
+        renderMonthCalendarCard(document, calendarConst.emptyDayValue, i);
     }
     /* Render validated month days */
     dates.map((date) => {
@@ -129,7 +125,7 @@ var setMonthTitle = (title, document) => {
 };
 
 /* Next month button pressed trigger function */
-var setNextMonth = (document) => {
+var changeToNextMonth = (document) => {
     /* If actual month is the last month of actual year */
     if (calendarMonth === 11) {
         /* Next month is the first of the next year */
@@ -145,7 +141,7 @@ var setNextMonth = (document) => {
     monthCalendar(calendarMonth, calendarYear, document);
 };
 /* Preview month button pressed trigger function */
-var setPrevMonth = (document, innerID, monthTitleID) => {
+var changeToPrevMonth = (document, innerID, monthTitleID) => {
     /* If actual month is the first of actual year */
     if (calendarMonth === 0) {
         /* Next month is lastest of preview year */
@@ -163,33 +159,23 @@ var setPrevMonth = (document, innerID, monthTitleID) => {
 
 /* Generate calendar logic */
 
-
-
-
-
-
-
-
 var startMonthCalendar = (document) => {
     getEvents();
     showArrows(document)
     document.getElementById(viewConst.weekHoursContainer).innerHTML = '';
     /* Get actual date */
     let today = new Date();
-    document.getElementById(viewConst.containerID).innerHTML = '';
-    /* Define calendarMonth to actual month */
     calendarMonth = today.getMonth();
     /* Define clendarYear to actual year */
     calendarYear = today.getFullYear();
+    document.getElementById(viewConst.containerID).innerHTML = '';
     setMonthTitle(monthNames[today.getMonth()] + ' ' + calendarYear, document);
-    /* Add click event listener to next month button */
-    document.getElementById(viewConst.nextMonthID).addEventListener('click', () => setNextMonth(document));
-    /* Add click event listener to preview month button */
-    document.getElementById(viewConst.prevMonthID).addEventListener('click', () => setPrevMonth(document));
     /* Generate calendar */
     monthCalendar(calendarMonth, calendarYear, document, containerID);
 };
 
 module.exports = {
     startMonthCalendar: startMonthCalendar,
+    changeToPrevMonth: changeToPrevMonth,
+    changeToNextMonth: changeToNextMonth
 }

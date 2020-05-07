@@ -10,8 +10,10 @@ let sepMonthName = 'September';
 let octMonthName = 'October';
 let novMonthName = 'November';
 let decMonthName = 'December';
+let calendarMonth;
+let calendarYear;
 
-
+const emptyDayValue = "."
 const monthNames = [
     janMonthName,
     febMonthName,
@@ -48,5 +50,8 @@ const weekDates = {
 
 module.exports = {
     monthNames: monthNames,
-    weekDates: weekDates
+    weekDates: weekDates,
+    emptyDayValue: emptyDayValue,
+    calendarMonth: calendarMonth,
+    calendarYear: calendarYear
 }

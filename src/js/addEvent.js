@@ -1,5 +1,6 @@
 const viewConst = require('../js/viewConst')
 const ipc = require('electron').ipcRenderer
+const dialog = require('electron').dialog
 
 var openModalAddEvents = (document) => {
     Array.from(document.getElementsByClassName(viewConst.hourBoxClass)).map((element) => {
@@ -23,12 +24,14 @@ var saveEvent = (document) => {
     let endTime = document.getElementById(viewConst.endTimeInputID).value;
     let title = document.getElementById(viewConst.titleEventInputID).value;
     let description = document.getElementById(viewConst.descriptionEventInputID).value
+    let badgeClass = viewConst.badgeClasses[Math.floor(Math.random() * viewConst.badgeClasses.length)]
     ipc.send('save-event', {
         date: date,
         startTime: startTime,
         endTime: endTime,
         title: title,
-        description: description
+        description: description,
+        badgeClass: badgeClass
     })
 
 }
