@@ -1,10 +1,15 @@
-## Installation process
-
-- clone repository.
+# Code Standards
+- JavaScript Coding Conventions
 
 # Requirements
 
 - MongoDB
+
+
+# Installation process
+
+- clone repository.
+
 
 # Execute the following commands
 
