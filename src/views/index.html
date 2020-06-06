@@ -6,8 +6,16 @@
 </header>
 
 <body>
+    <!-- Login -->
+    <div id="login-container" class="container col-md-12">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Username</label>
+              <input type="email" class="form-control" id="username" placeholder="Enter Username">
+            </div>
+            <button id="log-in" class="btn btn-primary">Log In</button>
+    </div>
     <!-- Calendar Container -->
-    <div class="container col-md-12 mt-5">
+    <div id="calendar-container" style="display: none;" class="container col-md-12 mt-5">
         <button id="weekly" class="btn">
             Weekly
         </button>
@@ -57,6 +65,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <input id='event-id' value="" hidden />
+                    <input id="submit-type" value='save' hidden />
                     <p>Date: DD-MM-YYYY</p>
                     <input id="event-date" type="text" class="form-control" />
                     <p>Start time: HH-MM</p>
@@ -67,8 +77,19 @@
                     <input id="event-title" type="text" class="form-control" />
                     <p>Description</p>
                     <input id="event-description" type="text" class="form-control" />
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Invite</th>
+                          </tr>
+                        </thead>
+                        <tbody id="users-table">
+                        </tbody>
+                      </table>
                 </div>
                 <div class="modal-footer">
+                    <button id="delete-event" type="button" class="btn btn-primary">Delete</button>
                     <button id="save-event" type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>

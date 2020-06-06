@@ -1,51 +1,56 @@
 /* Import bootstrap module */
 @import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-.arrow-icon{
-    width: 20px;
-    height: 20px;
+.arrow-icon {
+	width: 20px;
+	height: 20px;
 }
 
-.bg-not-month{
-    opacity: 0.6;
+table {
+	overflow-y: scroll;
+	height: 100px;
+	display: block;
 }
 
-.bg-end-week{
-    background-color: lightsteelblue;
+.bg-not-month {
+	opacity: 0.6;
 }
 
-.week-calendar-box-height{
+.bg-end-week {
+	background-color: lightsteelblue;
+}
+
+.week-calendar-box-height {
 	height: 60px;
 }
 
-.full-width{
+.full-width {
 	width: 98%;
 	padding-left: 40px;
 }
 
-.card-body{
+.card-body {
 	overflow: scroll;
 }
 
-.week-hour-box{
+.week-hour-box {
 	overflow: scroll;
 	border: 1px solid;
 	border-color: grey;
 	width: 14.2%;
 	padding: 10px;
 	height: 60px;
-
 }
 
-.week-calendar-day-name{
+.week-calendar-day-name {
 	border: 1px solid;
 	border-color: grey;
 	width: 14.2%;
 	padding: 10px;
 	height: 60px;
-	font-size: 14px
+	font-size: 14px;
 }
 
-.week-box-width{
-	width: 14.2%
+.week-box-width {
+	width: 14.2%;
 }
