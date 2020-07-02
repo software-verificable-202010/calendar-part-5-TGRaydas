@@ -41,9 +41,11 @@ const loginContainerID = 'login-container';
 const eventCardID = 'event';
 const submitEventTypeID = 'submit-type';
 const usersTable = 'users-table';
+const changeCalendarDropDownID = 'dropdownMenuButton';
+const dropDownMenu = 'dropDown';
 const inviteCheckbox = 'invite-checkbox';
 const deleteEventButtonID = 'delete-event';
-
+const dropDownItemClass = 'dropdown-item';
 const badgeClasses = [
 	primaryBadgeClass,
 	secondaryBadgeClass,
@@ -92,5 +94,8 @@ module.exports = {
 	eventSpanID: eventSpanID,
 	usersTable: usersTable,
 	inviteCheckbox: inviteCheckbox,
-	deleteEventButtonID: deleteEventButtonID
+	deleteEventButtonID: deleteEventButtonID,
+	changeCalendarDropDownID: changeCalendarDropDownID,
+	dropDownMenu: dropDownMenu,
+	dropDownItemClass: dropDownItemClass
 };

@@ -7,10 +7,9 @@ const ipc = require('electron').ipcRenderer;
 let firstDayWeek = null;
 let weekDayOffSet = null;
 let events = [];
-let monthNavigationValue = 1;
-
-/* Display navigation arrows accords to week calendar */
-var showArrows = () => {
+let calendarMonth = 0;
+let calendarYear = 0;
+var showArrows = (document) => {
 	document.getElementById(viewConst.nextMonthID).style.display = 'none';
 	document.getElementById(viewConst.prevMonthID).style.display = 'none';
 	document.getElementById(viewConst.nextWeekID).style.display = 'block';
@@ -21,7 +20,7 @@ var getEvents = () => {
 	events = ipc.sendSync('get-events');
 };
 
-var searchEventsInHourBox = (startHour, endHour, actualDate) => {
+var searchEventsInHourBox = (startHour, endHour, actualDate, events) => {
 	let hourEvents = [];
 
 	events.map((event) => {
@@ -30,10 +29,7 @@ var searchEventsInHourBox = (startHour, endHour, actualDate) => {
 		}
 		if (startHour >= parseInt(event.startTime.split(':')[0]) && endHour <= parseInt(event.endTime.split(':')[0])) {
 			hourEvents.push(event);
-		} else if (
-			startHour <= parseInt(event.endTime.split(':')[0]) &&
-			endHour >= parseInt(event.endTime.split(':')[0])
-		) {
+		} else if (startHour <= parseInt(event.endTime.split(':')[0]) && endHour >= parseInt(event.endTime.split(':')[0])) {
 			hourEvents.push(event);
 		}
 	});
@@ -45,9 +41,7 @@ var setMonthTitle = (title, document) => {
 };
 
 var getDaysInWeek = (month, year) => {
-	/*First day of the week + 1 for get first as monday*/
 	var first = firstDayWeek + 1;
-	/* last day is the first day + 6 */
 	var last = first + 6;
 	var dates = [];
 	var dayOfNextMonth = 1;
@@ -59,11 +53,9 @@ var getDaysInWeek = (month, year) => {
 			var daysInPrevMonth = getDaysInMonth(month - 1, year);
 			date = new Date(year, month - 1, daysInPrevMonth[daysInPrevMonth.length + day]).toUTCString();
 		} else if (day > daysInMonth[daysInMonth.length - 1].getDate()) {
-			/* day loop is greater than last day in month */
 			date = new Date(year, month + 1, dayOfNextMonth).toUTCString();
 			dayOfNextMonth += 1;
 		} else if (day < daysInMonth[0].getDate()) {
-			/* day loop is less than first day in month */
 			date = new Date(year, month - 1, daysInMonth[daysInMonth.length - dayOfPrevMonthIndex]).toUTCString();
 			dayOfPrevMonthIndex -= 1;
 		}
@@ -71,15 +63,12 @@ var getDaysInWeek = (month, year) => {
 	}
 	return dates;
 };
-const weekDates = require('../js/calendarConst').weekDates;
 
-/* Display all week calendar hours */
 var renderWeekCalendarCard = (document, events, id, bgClass) => {
 	let card = `<div date='${id}' class="${viewConst.hourBoxClass} ${bgClass}">${events}</div>`;
 	document.getElementById(viewConst.containerID).innerHTML += card;
 };
 
-/* Display week calendar left side hours */
 var renderWeekCalendarHours = (document) => {
 	document.getElementById(viewConst.weekHoursContainer).innerHTML = '';
 	for (let hour = 0; hour < 24; ++hour) {
@@ -90,12 +79,11 @@ var renderWeekCalendarHours = (document) => {
 	}
 };
 
-/* Return the event view in week calendar */
 var getEventCard = (event, index) => {
 	let card = `<span index="${index}" invited=${event.isInvited} class="${event.badgeClass}">${event.title}
-                    <br/>${event.description}
-                    <br/>${event.startTime}-${event.endTime}
-                </span>`;
+					<br/>${event.description}
+					<br/>${event.startTime}-${event.endTime}
+				</span>`;
 	return card;
 };
 
@@ -116,15 +104,15 @@ var generateWeekCalendar = (month, year, document) => {
 		let lastMonthDay = parseInt(monthDays[monthDays.length - 1].toString().split(' ')[2]);
 		let boxID = `${weekDay}-${month}-${year}`;
 		let bgClass = '';
-		/*If weekDay is greater than last day of actual month, start as first day of next month*/
+
 		if (weekDay > lastMonthDay) {
 			weekDay = weekDay - lastMonthDay;
 		}
-		/* If day belong to next month  */
+
 		if (weekDay < parseInt(weekDates[0][1])) {
 			boxID = `${weekDay}-${month + 1}-${year}`;
 		}
-		let hoursEvents = searchEventsInHourBox(hour, hour + 1, boxID);
+		let hoursEvents = searchEventsInHourBox(hour, hour + 1, boxID, events);
 		let hourBoxEvents = '';
 		hoursEvents.map((event, index) => {
 			hourBoxEvents += getEventCard(event, index);
@@ -160,7 +148,6 @@ var changeToNextWeek = (document) => {
 	firstDayWeek += 7;
 	const daysMonth = getDaysInMonth(calendarMonth, calendarYear);
 	let lastMonthDay = daysMonth[daysMonth.length - 1].getDate();
-
 	if (firstDayWeek >= lastMonthDay) {
 		calendarMonth += 1;
 		if (calendarMonth > 11) {
@@ -190,21 +177,22 @@ var changeToPrevWeek = (document) => {
 };
 
 var startWeekCalendar = (document) => {
-	showArrows();
+	showArrows(document);
 	let today = new Date();
 	firstDayWeek = today.getDate();
 	weekDayOffSet = today.getDay();
 	firstDayWeek = firstDayWeek - weekDayOffSet;
-	/* Define calendarMonth to actual month */
 	calendarMonth = today.getMonth();
-	/* Define clendarYear to actual year */
 	calendarYear = today.getFullYear();
-	/* Generate calendar */
 	generateWeekCalendar(calendarMonth, calendarYear, document);
 };
 
 module.exports = {
 	startWeekCalendar: startWeekCalendar,
 	changeToPrevWeek: changeToPrevWeek,
-	changeToNextWeek: changeToNextWeek
+	changeToNextWeek: changeToNextWeek,
+	getEventCard: getEventCard,
+	getDaysInWeek: getDaysInWeek,
+	getDaysInMonth: getDaysInMonth,
+	searchEventsInHourBox: searchEventsInHourBox
 };

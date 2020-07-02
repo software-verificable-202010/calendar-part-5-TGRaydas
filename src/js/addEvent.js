@@ -1,11 +1,11 @@
 const viewConst = require('../js/viewConst');
 const ipc = require('electron').ipcRenderer;
-const dialog = require('electron').dialog;
 var events = [];
 var users = [];
 let invitedUsers = [];
 var getUsers = () => {
 	users = ipc.sendSync('get-users');
+	return users;
 };
 
 var clearModal = (document) => {
@@ -76,8 +76,6 @@ var setEvent = (document, event, index) => {
 	});
 };
 
-var updateEvent = (document) => {};
-
 var saveEvent = (document, reloadCalendar) => {
 	let date = document.getElementById(viewConst.dateEventInputID).value;
 	let startTime = document.getElementById(viewConst.startTimeInputID).value;
@@ -123,12 +121,21 @@ var deleteEvent = (document, reloadCalendar) => {
 	reloadCalendar(document);
 };
 
+var getUsersRows = (users) => {
+	let usersRows = [];
+	users.map((user) => {
+		let userRow = `<tr><td>${user.username}</td><td><input username="${user.username}"
+						class="${viewConst.inviteCheckbox}" type="checkbox"/></td</tr>`;
+		usersRows.push(userRow);
+	});
+	return usersRows;
+};
+
 var fillUsersTable = (document) => {
 	getUsers();
 	document.getElementById(viewConst.usersTable).innerHTML = '';
-	users.map((user) => {
-		let userRow = `<tr><td>${user.username}</td><td><input username="${user.username}"
-						 class="${viewConst.inviteCheckbox}" type="checkbox"/></td</tr>`;
+	let usersRows = getUsersRows(users);
+	usersRows.map((userRow) => {
 		document.getElementById(viewConst.usersTable).innerHTML += userRow;
 	});
 	Array.from(document.getElementsByClassName(viewConst.inviteCheckbox)).map((element) => {
@@ -144,7 +151,7 @@ var fillUsersTable = (document) => {
 	});
 };
 
-var modalButtonsEvents = (document, reloadCalendar) => {
+var addModalButtonsEvents = (document, reloadCalendar) => {
 	var modal = document.getElementById(viewConst.modalID);
 	document.getElementById(viewConst.deleteEventButtonID).addEventListener('click', () => {
 		deleteEvent(document, reloadCalendar);
@@ -161,6 +168,8 @@ var modalButtonsEvents = (document, reloadCalendar) => {
 
 module.exports = {
 	openModalAddEvents: openModalAddEvents,
-	modalButtonsEvents: modalButtonsEvents,
-	openEventsAddEventListener: openEventsAddEventListener
+	modalButtonsEvents: addModalButtonsEvents,
+	openEventsAddEventListener: openEventsAddEventListener,
+	getUsers: getUsers,
+	getUsersRows: getUsersRows
 };

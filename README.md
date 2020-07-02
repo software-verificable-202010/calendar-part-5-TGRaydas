@@ -15,6 +15,9 @@
 - Use camelcase when naming variables and functions.
 - Commas must be placed at the end of the current line.
 
+# Problems
+
+No problems have been detected in the workspace so far
 
 # Requirements
 
@@ -31,4 +34,11 @@
 - npm install
 - npm start
 
+# Run Test
+Using jest as testing source.
+
+- npm run coverage
+
+# Test Image Coverage
+![alt text](Test.png)
 
