@@ -16,7 +16,6 @@ const eventSpanID = 'event';
 const containerID = 'week-calendar-days';
 const startTimeInputID = 'event-start-time';
 const endTimeInputID = 'event-end-time';
-const backgroundWhiteClass = 'bg-white';
 const monthBoxHeaderClass = 'bg-primary';
 const monthBoxEndWeekDayHeaderClass = 'bg-success';
 const dayNotInMonthClass = 'bg-light bg-not-month';
