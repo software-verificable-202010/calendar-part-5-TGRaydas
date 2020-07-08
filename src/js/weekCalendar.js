@@ -144,7 +144,6 @@ var getDaysInMonth = (month, year) => {
 };
 
 var changeToNextWeek = (document) => {
-	monthNavigationValue = 1;
 	firstDayWeek += 7;
 	const daysMonth = getDaysInMonth(calendarMonth, calendarYear);
 	let lastMonthDay = daysMonth[daysMonth.length - 1].getDate();
@@ -159,10 +158,7 @@ var changeToNextWeek = (document) => {
 	generateWeekCalendar(calendarMonth, calendarYear, document);
 };
 var changeToPrevWeek = (document) => {
-	monthNavigationValue = 0;
 	firstDayWeek -= 7;
-	const daysMonth = getDaysInMonth(calendarMonth, calendarYear);
-	let lastMonthDay = daysMonth[daysMonth.length - 1].getDate();
 	let firstMonthDay = 1;
 	if (firstDayWeek < firstMonthDay) {
 		calendarMonth -= 1;

@@ -21,10 +21,6 @@ const ipc = require('electron').ipcMain;
 let loggedUser = null;
 let selectedUser = null;
 
-if (process.env.NODE_ENV !== 'production') {
-	require('electron-reload')(__dirname, {});
-}
-
 var createWindow = () => {
 	mainWindow = new BrowserWindow({
 		webPreferences: {
@@ -42,7 +38,7 @@ var createWindow = () => {
 
 app.on('ready', () => createWindow());
 
-ipc.on('is-logged', (event, args) => {
+ipc.on('is-logged', (event) => {
 	event.returnValue = loggedUser;
 });
 
@@ -114,7 +110,6 @@ ipc.on('get-events', async (event) => {
 					events.push(event);
 				}
 			});
-			// GET SELECTED USER EVENTS
 			collection.find({ username: selectedUser }).toArray((err, result) => {
 				if (err) {
 					return;

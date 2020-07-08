@@ -51,7 +51,7 @@ var openEventsAddEventListener = (document, allEvents) => {
 		if (element.getAttribute('invited') === 'true') {
 			return;
 		}
-		element.addEventListener('click', (event) => {
+		element.addEventListener('click', () => {
 			document.getElementById(viewConst.modalID).style.display = 'block';
 			let index = element.getAttribute('index');
 			setEvent(document, events[index], index);

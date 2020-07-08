@@ -15,7 +15,7 @@ const selectUsersCalendar = require('../js/login.js').selectUsersCalendar;
 let calendarStarted = false;
 let logged = false;
 var getUsers = () => {
-	users = ipc.sendSync('get-users');
+	let users = ipc.sendSync('get-users');
 	return users;
 };
 
